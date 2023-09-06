@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:user_settings/providers/theme_provider.dart';
 import 'package:user_settings/router/app_router.dart';
-import 'package:user_settings/screens/home_screen.dart';
+import 'package:user_settings/settings/settings.dart';
 import 'package:user_settings/theme/theme.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Preferences.init();
+
+  runApp(const StateApp());
+}
+
+class StateApp extends StatelessWidget {
+  const StateApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => ThemeProvider(isDarkMode: Preferences.darkMode))
+      ],
+      child: const MyApp(),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -16,8 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'User Settings',
-      theme: AppTheme.theme,
-      darkTheme: AppTheme.darkTheme,
+      theme: Provider.of<ThemeProvider>(context).currentTheme,
       initialRoute: AppRoutes.initialRoute,
       onGenerateRoute: AppRoutes.onGenerateRoute,
       routes: AppRoutes.getAppRoutes(),

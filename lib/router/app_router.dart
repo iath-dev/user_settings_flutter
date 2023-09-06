@@ -6,8 +6,16 @@ class AppRoutes {
   static const String initialRoute = "home";
 
   static final menuOptions = <NavItem>[
-    NavItem(route: "home", screen: const HomeScreen()),
-    NavItem(route: "map", screen: const SettingsScreen()),
+    NavItem(
+        route: "home",
+        screen: const HomeScreen(),
+        label: "Home",
+        icon: Icons.home),
+    NavItem(
+        route: "map",
+        screen: const SettingsScreen(),
+        label: "Settings",
+        icon: Icons.settings),
   ];
 
   static Map<String, Widget Function(BuildContext)> getAppRoutes() {
